@@ -1,0 +1,560 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Diya & Neha | Puberty Ceremony</title>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@400;500;600;700&family=Great+Vibes&family=Montserrat:wght@400;500;600&display=swap');
+
+:root{
+  --purple:#673979;
+  --purple-dark:#351b3e;
+  --lavender:#f3e8f5;
+  --gold:#c9a45d;
+  --cream:#fffaf6;
+  --text:#49374d;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--cream);color:var(--text);font-family:Montserrat,sans-serif;overflow-x:hidden}
+button{font:inherit}
+
+/* ENVELOPE */
+#gate{
+  position:fixed;inset:0;z-index:100;
+  display:grid;place-items:center;
+  background:radial-gradient(circle at 50% 28%,#9b6aaa,#5d326f 52%,#240c2c);
+  transition:opacity .9s,visibility .9s;
+}
+#gate.hide{opacity:0;visibility:hidden;pointer-events:none}
+.gate-content{text-align:center}
+.gate-hint{color:#fff;font-size:10px;letter-spacing:4px;text-transform:uppercase;opacity:.82;margin-bottom:26px}
+.envelope{
+  width:min(350px,84vw);height:230px;position:relative;
+  cursor:pointer;perspective:1000px;
+  filter:drop-shadow(0 25px 35px rgba(0,0,0,.38));
+}
+.env-body{
+  position:absolute;inset:0;background:#fbf1e8;border-radius:6px;overflow:hidden;
+}
+.env-body:before,.env-body:after{
+  content:"";position:absolute;bottom:-3px;width:75%;height:100%;background:#e8d5e9;
+}
+.env-body:before{left:-37%;transform:skewY(31deg)}
+.env-body:after{right:-37%;transform:skewY(-31deg)}
+.envelope-card{
+  position:absolute;z-index:3;left:7%;top:9%;width:86%;height:82%;
+  background:#fffdf9;border:1px solid #e3cfb4;
+  display:grid;place-items:center;transition:transform 1s .1s cubic-bezier(.2,.8,.2,1);
+}
+.envelope.open .envelope-card{transform:translateY(-145px)}
+.envelope-card-inner{
+  width:88%;height:84%;border:1px solid var(--gold);
+  display:grid;place-items:center;text-align:center;
+}
+.envelope-card small{font-size:7px;letter-spacing:2px;color:#715d72}
+.envelope-script{font-family:"Great Vibes";font-size:34px;color:var(--purple);margin-top:7px}
+.flap{
+  position:absolute;top:0;left:0;width:100%;height:130px;
+  background:#f1dfe9;clip-path:polygon(0 0,100% 0,50% 100%);
+  transform-origin:top;z-index:5;transition:1s cubic-bezier(.2,.8,.2,1);
+}
+.envelope.open .flap{transform:rotateX(180deg)}
+.seal{
+  position:absolute;z-index:7;left:50%;top:50%;
+  transform:translate(-50%,-50%);
+  width:64px;height:64px;border-radius:50%;
+  background:var(--purple);border:4px solid #e7cda1;
+  color:#fff;display:grid;place-items:center;
+  font:28px "Great Vibes";transition:.45s;
+}
+.envelope.open .seal{opacity:0;transform:translate(-50%,-50%) scale(.3)}
+
+/* PETALS + CONFETTI */
+#petals{position:fixed;inset:0;z-index:15;pointer-events:none;overflow:hidden}
+.petal{
+  position:absolute;top:-25px;width:8px;height:13px;
+  background:#a57ab0;opacity:.13;border-radius:80% 20%;
+  animation:petalFall linear infinite;
+}
+@keyframes petalFall{
+  to{transform:translate3d(var(--drift),110vh,0) rotate(420deg)}
+}
+#confetti{position:fixed;inset:0;z-index:120;pointer-events:none;overflow:hidden}
+.confetti-piece{
+  position:absolute;top:-20px;width:7px;height:12px;
+  animation:confettiFall 2.7s ease-out forwards;
+}
+@keyframes confettiFall{
+  to{transform:translate3d(var(--x),110vh,0) rotate(720deg);opacity:0}
+}
+
+/* MAIN */
+.hero{
+  min-height:690px;padding:80px 20px 55px;
+  display:grid;place-items:center;text-align:center;
+  position:relative;overflow:hidden;
+  background:
+    radial-gradient(circle at 50% 12%,rgba(180,135,194,.23),transparent 38%),
+    linear-gradient(#fffaf7,#f4e8f6);
+}
+.hero:before{
+  content:"";position:absolute;inset:20px;
+  border:1px solid rgba(103,57,121,.22);
+  border-radius:48% 48% 0 0;
+}
+.hero-inner{position:relative;z-index:2;width:100%;max-width:900px}
+.eyebrow{
+  color:var(--purple);font-size:10px;font-weight:600;
+  letter-spacing:4px;text-transform:uppercase;
+}
+.names{
+  margin:26px auto 0;
+  display:flex;flex-direction:column;align-items:center;
+}
+.name{
+  font:400 clamp(48px,9vw,88px)/.95 "Great Vibes";
+  color:var(--purple);white-space:nowrap;
+}
+.name-amp{
+  font:400 43px/1 "Cormorant Garamond";
+  color:var(--gold);margin:12px 0;
+}
+.hero-rule{height:1px;width:170px;background:var(--gold);margin:26px auto}
+.event-name{
+  font:500 clamp(27px,5vw,42px) "Cormorant Garamond";
+  letter-spacing:2px;color:var(--purple-dark);
+}
+.date{
+  font:500 21px "Cormorant Garamond";
+  letter-spacing:3px;margin-top:13px;
+}
+
+/* COUNTDOWN */
+.countdown{
+  margin:32px auto 0;max-width:650px;
+  padding:22px 16px;
+  background:rgba(255,255,255,.72);
+  border:1px solid #ddc8df;border-radius:10px;
+  backdrop-filter:blur(5px);
+}
+.countdown-title{
+  color:var(--purple);font-size:9px;
+  letter-spacing:4px;margin-bottom:14px;
+}
+.timer{
+  display:grid;grid-template-columns:repeat(4,1fr);
+}
+.timer-item{padding:0 8px}
+.timer-item+.timer-item{border-left:1px solid #e3d6e4}
+.timer-value{
+  display:block;font:600 clamp(28px,5vw,42px) "Cormorant Garamond";
+  color:var(--purple);
+}
+.timer-label{
+  display:block;font-size:7px;letter-spacing:2px;
+  color:#7f6b82;margin-top:3px;
+}
+
+/* SECTIONS */
+.section{padding:68px 20px;background:var(--cream)}
+.section.alt{background:var(--lavender)}
+.container{max-width:850px;margin:auto;text-align:center}
+.section-title{
+  font:500 42px "Cormorant Garamond";
+  color:var(--purple-dark);margin:8px 0 20px;
+}
+.intro{
+  max-width:650px;margin:0 auto 34px;
+  font:400 20px/1.65 "Cormorant Garamond";
+  color:#66556a;
+}
+
+/* WELCOME */
+.welcome-script{
+  font:400 48px/1.05 "Great Vibes";
+  color:var(--purple);margin:25px 0;
+}
+
+/* FAMILY */
+.family-grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}
+.family-box{
+  background:#fff;border:1px solid #e0cde3;border-radius:9px;
+  padding:25px 14px;box-shadow:0 10px 25px rgba(75,39,87,.05);
+}
+.family-box.full{grid-column:1/-1}
+.family-heading{
+  font:600 27px "Cormorant Garamond";
+  color:var(--purple);margin:0 0 15px;
+}
+.family-two-col{
+  display:grid;
+  grid-template-columns:1fr 1fr;
+  grid-template-rows:auto auto auto;
+  width:100%;
+  align-items:stretch;
+}
+.aligned-family .column-heading{
+  margin:0;
+  padding:0 12px 15px;
+  min-width:0;
+}
+.aligned-family .column-heading:nth-child(2){
+  border-left:1px solid #e3d6e4;
+}
+.family-person{
+  min-width:0;
+  min-height:118px;
+  padding:16px 10px;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  border-top:1px solid #e3d6e4;
+}
+.aligned-family .family-person:nth-child(4),
+.aligned-family .family-person:nth-child(6){
+  border-left:1px solid #e3d6e4;
+}
+.family-person p{
+  margin:0;text-align:center;
+  font-size:13px;line-height:1.75;
+}
+
+/* EVENT */
+.event-card{
+  max-width:650px;margin:auto;background:#fff;
+  padding:38px 25px;border:1px solid #ddc6e0;
+  box-shadow:0 14px 35px rgba(75,39,87,.06);
+}
+.event-label{
+  font-size:9px;letter-spacing:3px;text-transform:uppercase;color:#806782;
+}
+.event-big{
+  font:500 34px "Cormorant Garamond";color:var(--purple);
+  margin:8px 0 24px;
+}
+.map-button{
+  display:inline-block;margin-top:3px;
+  padding:12px 24px;border:1px solid var(--gold);
+  color:var(--purple);text-decoration:none;
+  font-size:9px;letter-spacing:2px;text-transform:uppercase;
+}
+
+/* FINAL */
+.final{
+  padding:75px 20px 90px;text-align:center;
+  background:linear-gradient(#f3e8f5,#fffaf6);
+}
+.final-script{font:400 55px "Great Vibes";color:var(--purple)}
+.final p{
+  max-width:600px;margin:10px auto 0;
+  font:400 21px "Cormorant Garamond";
+}
+footer{
+  padding:18px;text-align:center;background:var(--cream);
+  color:#8b778e;font-size:8px;letter-spacing:2px;
+}
+
+/* MOBILE */
+@media(max-width:600px){
+  .hero{min-height:650px;padding-top:72px}
+  .name{font-size:50px}
+  .event-name{font-size:28px}
+  .family-grid{grid-template-columns:1fr}
+  .family-box.full{grid-column:auto}
+  .family-two-col{grid-template-columns:1fr 1fr}
+  .aligned-family .column-heading{padding-left:5px;padding-right:5px}
+  .family-person{min-height:118px;padding:14px 4px}
+  .family-person p{font-size:11px;line-height:1.65}
+  .family-heading{font-size:23px}
+  .section{padding:56px 15px}
+}
+</style>
+</head>
+<body>
+
+<!-- OPENING ENVELOPE -->
+<div id="gate">
+  <div class="gate-content">
+    <div class="gate-hint">Tap to open the invitation</div>
+    <div class="envelope" id="envelope" onclick="openInvitation()">
+      <div class="env-body"></div>
+
+      <div class="envelope-card">
+        <div class="envelope-card-inner">
+          <div>
+            <small>WITH LOVE &amp; BLESSINGS</small>
+            <div class="envelope-script">Diya &amp; Neha</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="flap"></div>
+      <div class="seal">D&amp;N</div>
+    </div>
+  </div>
+</div>
+
+<!-- Put tamil.mp3 in the SAME folder as this HTML file -->
+<audio id="tamilAudio" src="tamil.mp3" preload="auto"></audio>
+
+<div id="petals"></div>
+<div id="confetti"></div>
+
+<main>
+
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="eyebrow">A Joyous Family Celebration</div>
+
+    <div class="names">
+      <div class="name">Diya Arunachalam</div>
+      <div class="name-amp">&amp;</div>
+      <div class="name">Neha Arunachalam</div>
+    </div>
+
+    <div class="eyebrow" style="margin-top:25px">Puberty Ceremony</div>
+    <div class="hero-rule"></div>
+    <div class="date">23 · AUGUST · 2026</div>
+
+    <div class="countdown">
+      <div class="countdown-title">COUNTDOWN TO THE CELEBRATION</div>
+      <div class="timer">
+        <div class="timer-item">
+          <span class="timer-value" id="days">00</span>
+          <span class="timer-label">DAYS</span>
+        </div>
+        <div class="timer-item">
+          <span class="timer-value" id="hours">00</span>
+          <span class="timer-label">HOURS</span>
+        </div>
+        <div class="timer-item">
+          <span class="timer-value" id="minutes">00</span>
+          <span class="timer-label">MINUTES</span>
+        </div>
+        <div class="timer-item">
+          <span class="timer-value" id="seconds">00</span>
+          <span class="timer-label">SECONDS</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WELCOME -->
+<section class="section">
+  <div class="container">
+    <div class="eyebrow">A Warm Invitation</div>
+    <h2 class="section-title">Come, Celebrate With Us</h2>
+    <p class="intro">
+      With hearts filled with happiness and gratitude, we warmly invite you
+      to join us as we celebrate this beautiful milestone in the lives of
+    </p>
+
+    <div class="welcome-script">
+      Diya Arunachalam<br>
+      <span style="font-family:'Cormorant Garamond';font-size:30px;color:var(--gold)">&amp;</span><br>
+      Neha Arunachalam
+    </div>
+
+    <p class="intro" style="margin-bottom:0">
+      Your presence, love and blessings will make this special occasion
+      even more memorable.
+    </p>
+  </div>
+</section>
+
+<!-- FAMILY -->
+<section class="section alt">
+  <div class="container">
+    <div class="eyebrow">With the blessings of our family</div>
+    <h2 class="section-title">Our Beloved Family</h2>
+
+    <div class="family-grid">
+
+      <!-- GRANDPARENTS: TWO COLUMNS -->
+      <div class="family-box full">
+        <h3 class="family-heading">Grandparents</h3>
+        <div class="family-two-col">
+          <div class="family-column">
+            <div class="family-person">
+              <p>Arunachalam<br>&amp;<br>Saraswathi</p>
+            </div>
+          </div>
+          <div class="family-column">
+            <div class="family-person">
+              <p>Subramaniam<br>&amp;<br>Anbuselvi</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- PARENTS -->
+      <div class="family-box full">
+        <h3 class="family-heading">Parents</h3>
+        <div class="family-person">
+          <p>Hariharasudhan<br>&amp;<br>Sangeetha</p>
+        </div>
+      </div>
+
+      <!-- MAMA/ATHAI + COUSINS: EXACT TWO COLUMNS -->
+      <div class="family-box full">
+        <div class="family-two-col aligned-family">
+
+          <h3 class="family-heading column-heading">Beloved Mama &amp; Athai</h3>
+          <h3 class="family-heading column-heading">Beloved Cousins</h3>
+
+          <div class="family-person aligned-person">
+            <p>
+              Krishnakumar Ramalingam<br>
+              &amp;<br>
+              Kumudavalli Arunachalam
+            </p>
+          </div>
+
+          <div class="family-person aligned-person">
+            <p>
+              Keya Ramalingam<br>
+              &amp;<br>
+              Kylie Ramalingam
+            </p>
+          </div>
+
+          <div class="family-person aligned-person">
+            <p>
+              Suresh Kumar<br>
+              &amp;<br>
+              Gowri Manohari
+            </p>
+          </div>
+
+          <div class="family-person aligned-person">
+            <p>
+              Adhav<br>
+              &amp;<br>
+              Reya
+            </p>
+          </div>
+
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- EVENT -->
+<section class="section">
+  <div class="container">
+    <div class="eyebrow">Save the Date</div>
+    <h2 class="section-title">Join Us</h2>
+
+    <div class="event-card">
+      <div class="event-label">The Ceremony</div>
+      <div class="event-big">Sunday, 23 August 2026</div>
+
+      <div class="event-label">Venue</div>
+      <div class="event-big">Aruna Farms</div>
+
+      <a
+        class="map-button"
+        href="https://maps.app.goo.gl/PgZrRPB1jFU7ToHU8?g_st=ac"
+        target="_blank"
+        rel="noopener"
+      >View Location</a>
+    </div>
+  </div>
+</section>
+
+<!-- CLOSING -->
+<section class="final">
+  <div class="final-script">With love &amp; blessings</div>
+  <p>We look forward to celebrating this beautiful occasion with you.</p>
+</section>
+
+<footer>DIYA &amp; NEHA · PUBERTY CEREMONY · 2026</footer>
+
+</main>
+
+<script>
+/* COUNTDOWN */
+const eventTime = new Date("2026-08-23T00:00:00+05:30").getTime();
+
+function updateCountdown(){
+  const remaining = Math.max(0, eventTime - Date.now());
+
+  const days = Math.floor(remaining / 86400000);
+  const hours = Math.floor((remaining % 86400000) / 3600000);
+  const minutes = Math.floor((remaining % 3600000) / 60000);
+  const seconds = Math.floor((remaining % 60000) / 1000);
+
+  document.getElementById("days").textContent = String(days).padStart(2,"0");
+  document.getElementById("hours").textContent = String(hours).padStart(2,"0");
+  document.getElementById("minutes").textContent = String(minutes).padStart(2,"0");
+  document.getElementById("seconds").textContent = String(seconds).padStart(2,"0");
+}
+updateCountdown();
+setInterval(updateCountdown,1000);
+
+/* ENVELOPE + MUSIC */
+function openInvitation(){
+  const envelope = document.getElementById("envelope");
+  const gate = document.getElementById("gate");
+  const audio = document.getElementById("tamilAudio");
+
+  envelope.classList.add("open");
+
+  /* Browser allows audio because this function is triggered by a tap. */
+  audio.currentTime = 0;
+  audio.play().catch(function(){
+    /* If the browser blocks audio, the invitation still opens normally. */
+  });
+
+  createConfetti();
+  createPetals();
+
+  setTimeout(function(){
+    gate.classList.add("hide");
+  },1100);
+}
+
+/* CONFETTI */
+function createConfetti(){
+  const box = document.getElementById("confetti");
+  const colors = ["#673979","#c9a45d","#eadcf0","#9a6aaa","#ffffff"];
+
+  for(let i=0;i<70;i++){
+    const piece = document.createElement("span");
+    piece.className = "confetti-piece";
+    piece.style.left = Math.random()*100 + "%";
+    piece.style.background = colors[Math.floor(Math.random()*colors.length)];
+    piece.style.setProperty("--x",(Math.random()*260-130)+"px");
+    piece.style.animationDelay = (Math.random()*.35)+"s";
+    box.appendChild(piece);
+  }
+
+  setTimeout(function(){
+    box.innerHTML="";
+  },3500);
+}
+
+/* SUBTLE PETALS */
+function createPetals(){
+  const box = document.getElementById("petals");
+  if(box.children.length) return;
+
+  for(let i=0;i<12;i++){
+    const petal = document.createElement("span");
+    petal.className = "petal";
+    petal.style.left = Math.random()*100 + "%";
+    petal.style.setProperty("--drift",(Math.random()*140-70)+"px");
+    petal.style.animationDuration = (14+Math.random()*12)+"s";
+    petal.style.animationDelay = (-Math.random()*18)+"s";
+    box.appendChild(petal);
+  }
+}
+</script>
+</body>
+</html>
